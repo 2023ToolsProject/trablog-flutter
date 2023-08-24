@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trablog/page/main_page.dart';
-import 'package:trablog/page/memory_page/memory_first.dart';
+import 'package:trablog/page/basic_page.dart';
 import 'package:trablog/page/sign_page/title_page.dart';
-import 'package:trablog/view_model/memory_model.dart';
+import 'package:trablog/view_model/basic_model.dart';
 import 'package:trablog/view_model/title_model.dart';
 import 'package:trablog/singleton/storage.dart';
 
@@ -26,8 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
         // ignore: use_build_context_synchronously
         Navigator.push(context, MaterialPageRoute(
             builder: (context) => ChangeNotifierProvider(
-                create: (context)=>MemoryModel(),
-                child: const MemoryFirst(),
+                create: (context)=>BasicModel(),
+                child: const BasicPage(),
             ))
         );
       } else {

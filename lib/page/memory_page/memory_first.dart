@@ -8,8 +8,7 @@ class MemoryFirst extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const space = SizedBox(width: 10,);
-    return Scaffold(
-      body: SafeArea(
+    return SafeArea(
         child: Column(
           children: [
             Expanded(
@@ -58,8 +57,7 @@ class MemoryFirst extends StatelessWidget {
             )
           ],
         ),
-      ),
-    );
+      );
   }
 }
 

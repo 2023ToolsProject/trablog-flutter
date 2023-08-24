@@ -5,9 +5,8 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async => false,
-        child: const Scaffold()
+    return Container(
+      child: const Text('메인 페이지'),
     );
   }
 }

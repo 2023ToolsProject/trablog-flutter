@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trablog/page/main_page.dart';
+import 'package:trablog/page/basic_page.dart';
 import 'package:trablog/view_model/sign_model.dart';
+import 'package:trablog/view_model/basic_model.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -50,7 +51,10 @@ class _SignInPageState extends State<SignInPage> {
                         if(await context.read<SignModel>().signIn()){
                           // ignore: use_build_context_synchronously
                           Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => const MainPage()
+                              builder: (context) => ChangeNotifierProvider(
+                                create: (context)=>BasicModel(),
+                                child: const BasicPage(),
+                              )
                           ));
                         } else {
                           // ignore: use_build_context_synchronously
