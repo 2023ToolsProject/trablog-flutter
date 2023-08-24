@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:trablog/page/sign_in_page.dart';
+import 'package:trablog/page/sign_page/sign_in_page.dart';
 import 'package:provider/provider.dart';
-import 'package:trablog/page/sign_up_page.dart';
+import 'package:trablog/page/sign_page/sign_up_page.dart';
 import 'package:trablog/view_model/sign_model.dart';
 
 class TitlePage extends StatelessWidget {
@@ -19,7 +19,7 @@ class TitlePage extends StatelessWidget {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/cat2.png')
+                image: AssetImage('assets/cat/cat2.png')
               )
             ),
             child: Column(
