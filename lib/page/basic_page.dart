@@ -10,6 +10,7 @@ class BasicPage extends StatelessWidget {
     return WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: context.read<BasicModel>().page[context.watch<BasicModel>().i],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: context.watch<BasicModel>().i,

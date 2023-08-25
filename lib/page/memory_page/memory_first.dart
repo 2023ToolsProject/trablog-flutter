@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trablog/page/memory_page/memory_second.dart';
 import 'package:trablog/view_model/memory_model.dart';
 
 class MemoryFirst extends StatelessWidget {
@@ -78,10 +79,20 @@ class Post extends StatelessWidget {
             height: 500,
             color: Colors.grey.shade300,
             child: Center(
-              child: Container(
-                width: 220,
-                height: 450,
-                color: Colors.white,
+              child: GestureDetector(
+                onTap: (){
+                  context.read<MemoryModel>().setIndex(index);
+                  var mm = context.read<MemoryModel>().mm;
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> ChangeNotifierProvider(
+                      create: (context)=> mm,
+                      child: const MemorySecond(),
+                  )));
+                },
+                child: Container(
+                  width: 220,
+                  height: 450,
+                  color: Colors.white,
+                ),
               ),
             ),
           )

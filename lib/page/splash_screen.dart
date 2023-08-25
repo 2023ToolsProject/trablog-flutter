@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:trablog/page/basic_page.dart';
 import 'package:trablog/page/sign_page/title_page.dart';
 import 'package:trablog/view_model/basic_model.dart';
+import 'package:trablog/view_model/memory_model.dart';
 import 'package:trablog/view_model/title_model.dart';
 import 'package:trablog/singleton/storage.dart';
+import 'package:trablog/view_model/write_model.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -24,8 +26,12 @@ class _SplashScreenState extends State<SplashScreen> {
       if((await Storage.pref!.getString('accessToken')) == '1234'){
         // ignore: use_build_context_synchronously
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ChangeNotifierProvider(
-                create: (context)=>BasicModel(),
+            builder: (context) => MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(create: (context)=>BasicModel()),
+                  ChangeNotifierProvider(create: (context)=>WriteModel()),
+                  ChangeNotifierProvider(create: (context)=>MemoryModel())
+                ],
                 child: const BasicPage(),
             ))
         );
