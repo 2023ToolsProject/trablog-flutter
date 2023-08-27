@@ -18,8 +18,7 @@ class MemoryModel extends ChangeNotifier {
   @override
   void dispose() {
     // TODO: implement dispose
-    print(this._index);
-    print('안 죽어');
+    print('dispose 실행');
   }
 
 }

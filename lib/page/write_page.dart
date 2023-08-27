@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trablog/view_model/write_model.dart';
@@ -10,31 +11,29 @@ class WritePage extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: [
-          Flexible(
-              child: SizedBox(
-                height: 80,
-                child: Stack(
-                    children: [
-                      const Center(child: Text('New Post',style: TextStyle(fontSize: 25),)),
-                      Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 30),
-                            child: GestureDetector(
-                                onTap: (){
-                                  print('누름');
-                                },
-                                child: const Text('Post',style: TextStyle(fontSize: 25),)
-                            ),
-                          )
-                      ),
-                      const Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Divider(thickness: 1.5,)
+          SizedBox(
+            height: 80,
+            child: Stack(
+                children: [
+                  const Center(child: Text('New Post',style: TextStyle(fontSize: 25),)),
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 30),
+                        child: GestureDetector(
+                            onTap: (){
+                              print('누름');
+                            },
+                            child: const Text('Post',style: TextStyle(fontSize: 25),)
+                        ),
                       )
-                    ],
-                )
-              )
+                  ),
+                  const Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Divider(thickness: 1.5,)
+                  )
+                ],
+            )
           ),
           SizedBox(
             height: 200,
@@ -44,11 +43,30 @@ class WritePage extends StatelessWidget {
                   child: Row(
                    mainAxisAlignment: MainAxisAlignment.center,
                    children: [
-                     Container(
-                       height: 150,
-                       width: 150,
-                       color: Colors.grey.shade300,
-                       child: const Icon(Icons.camera_alt,color: Color(0xff666666),),
+                     GestureDetector(
+                       onTap: () async{
+                         if(await context.read<WriteModel>().getXImage()){
+                           // ignore: use_build_context_synchronously
+                           showDialog(
+                               barrierDismissible: false,
+                               context: context,
+                               builder: (context){
+                                 return AlertDialog(
+                                   title: const Text('사진을 불러오는 데 실패했습니다.'),
+                                   actions: [
+                                     TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                                   ],
+                                 );
+                               }
+                           );
+                         }
+                       },
+                       child: Container(
+                         height: 150,
+                         width: 150,
+                         color: Colors.grey.shade300,
+                         child: const Icon(Icons.camera_alt,color: Color(0xff666666),),
+                       ),
                      ),
                      const SizedBox(width: 20,),
                      SizedBox(
@@ -74,8 +92,88 @@ class WritePage extends StatelessWidget {
             ),
           ),
           Expanded(
-              flex: 3,
-              child: Container()
+              child: Container(
+                margin: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Expanded(
+                        child: GestureDetector(
+                          onTap: () async{
+                            try{
+                             await context.read<WriteModel>().getPosition();
+                             // ignore: use_build_context_synchronously
+                             showDialog(
+                                 barrierDismissible: false,
+                                 context: context,
+                                 builder: (context){
+                                   return AlertDialog(
+                                     title: const Text('위치 정보를 가져오는데 성공'),
+                                     actions: [TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))],
+                                   );
+                                 });
+                            }catch(e){
+                              // ignore: use_build_context_synchronously
+                              showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context){
+                                    return AlertDialog(
+                                      title: Text(e.toString()),
+                                      actions: [TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))],
+                                    );
+                                  });
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                                    child: const Text('위치 태그',style: TextStyle(fontSize: 15),)
+                                ),
+                                Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                                    child: const Icon(Icons.arrow_forward_ios,size: 15,color: Colors.grey,)
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                    ),
+                    Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(border: Border.symmetric(vertical: BorderSide(color: Colors.grey))),
+                        )
+                    ),
+                    Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+                        )
+                    ),
+                    Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(border: Border(right: BorderSide(color: Colors.grey),left: BorderSide(color: Colors.grey),
+                          bottom: BorderSide(color: Colors.grey))),
+                        )
+                    ),
+                  ],
+                ),
+              )
+          ),
+          Expanded(
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: context.watch<WriteModel>().img?.length ?? 0,
+                  itemBuilder: (context, i){
+                    return Container(
+                        width: 50,
+                        margin: const EdgeInsets.all(5),
+                        child: Image.file(File(context.watch<WriteModel>().img![i].path))
+                    );
+                  }
+              )
           )
         ],
       )
