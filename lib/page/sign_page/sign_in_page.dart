@@ -52,7 +52,7 @@ class _SignInPageState extends State<SignInPage> {
                       onTap: () async{
                         if(await context.read<SignModel>().signIn()){
                           // ignore: use_build_context_synchronously
-                          Navigator.push(context, MaterialPageRoute(
+                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                               builder: (context) => MultiProvider(
                                 providers: [
                                   ChangeNotifierProvider(create: (context)=>BasicModel()),
@@ -60,8 +60,9 @@ class _SignInPageState extends State<SignInPage> {
                                   ChangeNotifierProvider(create: (context)=>MemoryModel())
                                 ],
                                 child: const BasicPage(),
-                              )
-                          ));
+                              )),
+                              (route)=>false
+                          );
                         } else {
                           // ignore: use_build_context_synchronously
                           showDialog(

@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     context.read<TitleModel>().toNextPage(() async{
       if((await Storage.pref!.getString('accessToken')) == '1234'){
         // ignore: use_build_context_synchronously
-        Navigator.push(context, MaterialPageRoute(
+        Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) => MultiProvider(
                 providers: [
                   ChangeNotifierProvider(create: (context)=>BasicModel()),
@@ -37,8 +37,11 @@ class _SplashScreenState extends State<SplashScreen> {
         );
       } else {
         // ignore: use_build_context_synchronously
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => const TitlePage())
+        Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) => ChangeNotifierProvider(
+                create: (context)=>TitleModel(),
+                child: const TitlePage(),
+            ))
         );
       }
     });

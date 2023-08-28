@@ -8,7 +8,7 @@ class BasicPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async => false,
+        onWillPop: () async => context.read<BasicModel>().onWillPop(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: context.read<BasicModel>().page[context.watch<BasicModel>().i],

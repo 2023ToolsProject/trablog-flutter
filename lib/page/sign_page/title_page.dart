@@ -3,6 +3,7 @@ import 'package:trablog/page/sign_page/sign_in_page.dart';
 import 'package:provider/provider.dart';
 import 'package:trablog/page/sign_page/sign_up_page.dart';
 import 'package:trablog/view_model/sign_model.dart';
+import 'package:trablog/view_model/title_model.dart';
 
 class TitlePage extends StatelessWidget {
   const TitlePage({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class TitlePage extends StatelessWidget {
     const empty = SizedBox(height: 20,);
 
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => context.read<TitleModel>().onWillPop(),
       child: Scaffold(
         body: SafeArea(
           child: Container(

@@ -43,20 +43,25 @@ class MemorySecond extends StatelessWidget {
               flex: 4,
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                    itemCount: 10,
-                    itemBuilder: (context, i){
-                      return GestureDetector(
-                        onTap: (){
-
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.all(5),
-                          child: Image.asset('assets/naver.png'),
-                        ),
-                      );
-                    }
+                child: Stack(
+                  children: [
+                    GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                      itemCount: 10,
+                      itemBuilder: (context, i){
+                        return GestureDetector(
+                          onTap: (){
+                            context.read<MemoryModel>().flipImage();
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(5),
+                            child: context.watch<MemoryModel>().isBack? Image.asset('assets/green.png') : Image.asset('assets/naver.png'),
+                          ),
+                        );
+                      }
+                  ),
+                    context.watch<MemoryModel>().isBack? const Text('메세지',style: TextStyle(color: Colors.white),) : const Text(''),
+                  ],
                 ),
               )
           )
