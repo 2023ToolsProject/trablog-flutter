@@ -13,7 +13,7 @@ class BasicModel extends ChangeNotifier {
     const WritePage(),
     const MemoryFirst(),
   ];
-  ExitModel _exModel = ExitModel();
+  final ExitModel _exModel = ExitModel();
 
   int get i => _index;
   List get page => _page;

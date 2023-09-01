@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Storage.init();
+    Storage.init(); // 이거 만들어지면 다음페이지로
   }
 
   @override
