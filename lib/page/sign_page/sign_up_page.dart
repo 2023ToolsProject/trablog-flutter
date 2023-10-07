@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trablog/view_model/sign_model.dart';
@@ -31,21 +32,14 @@ class SignUpPage extends StatelessWidget {
                     children: [
                       Container(
                         margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: const Text('Enter your Email & Password',style: TextStyle(fontSize: 20),),
+                        child: const Text('Enter your ID & Password',style: TextStyle(fontSize: 20),),
                       ),
                       space,
-                      TextForm('Email',context.read<SignModel>().con1),
+                      TextForm('Username',context.read<SignModel>().con1),
                       space,
-                      TextForm('Password',context.read<SignModel>().con2,obscure: true,),
+                      TextForm('ID',context.read<SignModel>().con2,),
                       space,
-                      TextForm('Password',context.read<SignModel>().con3!,obscure: true,
-                        vali: (value){
-                          if(value != context.read<SignModel>().con2.text){
-                            return '비밀번호가 다릅니다';
-                          }
-                          return null;
-                        },
-                      ),
+                      TextForm('Password',context.read<SignModel>().con3!,obscure: true,),
                     ],
                   ),
                 )
@@ -59,9 +53,43 @@ class SignUpPage extends StatelessWidget {
                   color: Colors.grey.shade300,
                   child: GestureDetector(
                       onTap: () async{
-                        if(await context.read<SignModel>().signUp()){
+                        try{
+                          await context.read<SignModel>().signUp();
                           // ignore: use_build_context_synchronously
-                          Navigator.pop(context);
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context){
+                                return AlertDialog(
+                                  title: const Text('회원가입 성공'),
+                                  actions: [TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))],
+                                );
+                              }
+                          );
+                        } on DioException catch(e){
+                          // ignore: use_build_context_synchronously
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context){
+                                  if(e.response?.statusCode == 400){
+                                    return AlertDialog(
+                                      title: const Text('잘못된 양식입니다'),
+                                      actions: [TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))],
+                                    );
+                                  } else if(e.response?.statusCode == 409){
+                                    return AlertDialog(
+                                      title: const Text('중복된 ID 입니다'),
+                                      actions: [TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))],
+                                    );
+                                  } else {
+                                    return AlertDialog(
+                                      title: Text(e.message ?? ''),
+                                      actions: [TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))],
+                                    );
+                                  }
+                              }
+                          );
                         }
                       },
                       child: const Center(child: Text('Sign Up',style: TextStyle(fontSize: 20),))

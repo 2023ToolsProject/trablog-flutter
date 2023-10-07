@@ -44,13 +44,14 @@ class _SignInPageState extends State<SignInPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 20,),
-                    TextForm('Email', context.read<SignModel>().con1),
+                    TextForm('ID', context.read<SignModel>().con1),
                     const SizedBox(height: 20,),
                     TextForm('Password', context.read<SignModel>().con2,obscure: true),
                     const SizedBox(height: 60,),
                     GestureDetector(
                       onTap: () async{
-                        if(await context.read<SignModel>().signIn()){
+                        try{
+                          // await context.read<SignModel>().signIn();
                           // ignore: use_build_context_synchronously
                           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                               builder: (context) => MultiProvider(
@@ -61,15 +62,15 @@ class _SignInPageState extends State<SignInPage> {
                                 ],
                                 child: const BasicPage(),
                               )),
-                              (route)=>false
+                                  (route)=>false
                           );
-                        } else {
+                        } catch(e){
                           // ignore: use_build_context_synchronously
                           showDialog(
                               context: context,
                               builder: (context){
                                 return AlertDialog(
-                                  title: const Text('로그인 실패'),
+                                  title: const Text('로그인 정보를 다시 확인하세요'),
                                   actions: [
                                     TextButton(
                                         onPressed: (){

@@ -12,9 +12,9 @@ class BasicPage extends StatelessWidget {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: context.read<BasicModel>().page[context.watch<BasicModel>().i],
-          bottomNavigationBar: Container(
+          bottomNavigationBar: const SizedBox(
             height: 100,
-            child: const Row(
+            child: Row(
               children: [
                 Expanded(child: BottomItem(Icons.room, 0)),
                 Expanded(child: BottomItem(Icons.mode_edit, 1)),

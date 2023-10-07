@@ -1,4 +1,7 @@
+import 'package:trablog/singleton/http.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:trablog/const/const_value.dart';
+import 'dart:convert';
 
 class LocationModel {
 
@@ -28,5 +31,31 @@ class LocationModel {
   Future<Position> getPosition() async{
     return await _determinePosition();
   }
+
+  getAddress(Position p,{int option = 1}) async {
+
+    switch(option){
+      case 1:
+        Map<String,String> queryData = {
+          'latlng' : '${p.latitude},${p.longitude}',
+          'key' : KEY,
+          'result_type' : 'street_address',
+        };
+        var enResult = await googleDio.get(REGEOCODE, queryParameters: queryData);
+        var deResult = json.decode(enResult.toString());
+        return deResult;
+      case 2:
+        Map<String,String> queryData = {
+          'latlng' : '${p.latitude},${p.longitude}',
+          'key' : KEY,
+          'result_type' : 'premise',
+        };
+        var enResult = await googleDio.get(REGEOCODE, queryParameters: queryData);
+        var deResult = json.decode(enResult.toString());
+        return deResult;
+    }
+
+  }
+
 
 }

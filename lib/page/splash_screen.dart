@@ -5,7 +5,6 @@ import 'package:trablog/page/sign_page/title_page.dart';
 import 'package:trablog/view_model/basic_model.dart';
 import 'package:trablog/view_model/memory_model.dart';
 import 'package:trablog/view_model/title_model.dart';
-import 'package:trablog/singleton/storage.dart';
 import 'package:trablog/view_model/write_model.dart';
 
 
@@ -22,25 +21,26 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    context.read<TitleModel>().toNextPage(() async{
-      if((await Storage.pref!.getString('accessToken')) == '1234'){
+    context.read<TitleModel>().toNextPage(() async {
+      try{
+        await context.read<TitleModel>().checkToken();
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => MultiProvider(
-                providers: [
-                  ChangeNotifierProvider(create: (context)=>BasicModel()),
-                  ChangeNotifierProvider(create: (context)=>WriteModel()),
-                  ChangeNotifierProvider(create: (context)=>MemoryModel())
-                ],
-                child: const BasicPage(),
-            ))
-        );
-      } else {
+                builder: (context) => MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider(create: (context) => BasicModel()),
+                        ChangeNotifierProvider(create: (context) => WriteModel()),
+                        ChangeNotifierProvider(create: (context) => MemoryModel())
+                      ],
+                      child: const BasicPage(),
+                    )));
+      } catch(e){
+        print(e.toString());
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) => ChangeNotifierProvider(
-                create: (context)=>TitleModel(),
-                child: const TitlePage(),
+              create: (context) => TitleModel(),
+              child: const TitlePage(),
             ))
         );
       }

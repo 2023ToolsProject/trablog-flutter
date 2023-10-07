@@ -22,7 +22,7 @@ class WritePage extends StatelessWidget {
                         margin: const EdgeInsets.symmetric(horizontal: 30),
                         child: GestureDetector(
                             onTap: (){
-                              print('누름');
+                              context.read<WriteModel>().post();
                             },
                             child: const Text('Post',style: TextStyle(fontSize: 25),)
                         ),
@@ -36,23 +36,25 @@ class WritePage extends StatelessWidget {
             )
           ),
           SizedBox(
-            height: 200,
+            height: 350,
             child: Stack(
               children: [
                 Center(
-                  child: Row(
+                  child: Column(
                    mainAxisAlignment: MainAxisAlignment.center,
                    children: [
                      GestureDetector(
                        onTap: () async{
-                         if(await context.read<WriteModel>().getXImage()){
+                         try {
+                           await context.read<WriteModel>().getXImage();
+                         }catch(e){
                            // ignore: use_build_context_synchronously
                            showDialog(
                                barrierDismissible: false,
                                context: context,
                                builder: (context){
                                  return AlertDialog(
-                                   title: const Text('사진을 불러오는 데 실패했습니다.'),
+                                   title: Text(e.toString()),
                                    actions: [
                                      TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
                                    ],
@@ -62,16 +64,19 @@ class WritePage extends StatelessWidget {
                          }
                        },
                        child: Container(
+                         margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                          height: 150,
-                         width: 150,
+                         width: double.infinity,
                          color: Colors.grey.shade300,
                          child: const Icon(Icons.camera_alt,color: Color(0xff666666),),
                        ),
                      ),
-                     const SizedBox(width: 20,),
-                     SizedBox(
-                       height: 180,
-                       width: 200,
+                     Container(
+                       padding: const EdgeInsets.symmetric(horizontal: 10),
+                       margin: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                       height: 150,
+                       width: double.infinity,
+                       color: Colors.grey.shade300,
                        child: TextFormField(
                          controller: context.read<WriteModel>().textCon,
                          maxLines: 10,
@@ -92,6 +97,7 @@ class WritePage extends StatelessWidget {
             ),
           ),
           Expanded(
+            flex: 3,
               child: Container(
                 margin: const EdgeInsets.all(20),
                 child: Column(
@@ -163,16 +169,27 @@ class WritePage extends StatelessWidget {
               )
           ),
           Expanded(
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: context.watch<WriteModel>().img?.length ?? 0,
-                  itemBuilder: (context, i){
-                    return Container(
-                        width: 50,
-                        margin: const EdgeInsets.all(5),
-                        child: Image.file(File(context.watch<WriteModel>().img![i].path))
-                    );
-                  }
+              child: Stack(
+                children: [
+                  const Align(
+                    alignment: Alignment.topCenter,
+                    child: Divider(thickness: 1.5,),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: context.watch<WriteModel>().img?.length ?? 0,
+                      itemBuilder: (context, i){
+                        return Container(
+                            width: 50,
+                            margin: const EdgeInsets.fromLTRB(1, 5, 1, 5),
+                            child: Image.file(File(context.watch<WriteModel>().img![i].path))
+                        );
+                      }
+                ),
+                  )
+                ],
               )
           )
         ],
