@@ -71,9 +71,11 @@ class MemorySecond extends StatelessWidget {
                               animation: rotate,
                               builder: (context, widget){
                                 final value = min(rotate.value, pi/2);
+                                var tilt = value / 2000;
+                                tilt *= rotate.status == AnimationStatus.forward? -1 : 1;
                                 return Transform(
                                   alignment: Alignment.center,
-                                  transform: Matrix4.rotationY(value),
+                                  transform: Matrix4.rotationY(value)..setEntry(3, 0, tilt),
                                   child: widget,
                                 );
                               },
