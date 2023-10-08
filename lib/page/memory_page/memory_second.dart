@@ -64,37 +64,67 @@ class MemorySecond extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: Stack(
                     children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 100),
-                        color: context.watch<MemoryModel>().isBack? Colors.grey.shade400 : Colors.white,
-                        child: GridView.builder(
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                          itemCount: 6,
-                          itemBuilder: (context, i){
-                            return Container(
-                              margin: const EdgeInsets.all(10),
-                              child: AnimatedSwitcher(
-                                  transitionBuilder: (widget, animation){
-                                    var rotate = Tween(begin: pi, end: 0.0).animate(animation);
-                                    return AnimatedBuilder(
-                                        animation: rotate,
-                                        builder: (context, widget){
-
-                                          final value = min(rotate.value, pi/2);
-                                          return Transform(
-                                              transform: Matrix4.rotationY(value),
-                                              child: widget,
-                                          );
-                                        },
-                                        child: widget
-                                    );
-                                  },
-                                  duration: const Duration(milliseconds: 500),
-                                  child: context.watch<MemoryModel>().isBack? Container(key: const ValueKey<int>(1), color: Colors.grey.shade400,) : Image.asset(key: const ValueKey<int>(0),'assets/naver.png')
+                      AnimatedSwitcher(
+                        transitionBuilder: (widget, animation){
+                          var rotate = Tween(begin: pi, end: 0.0).animate(animation);
+                          return AnimatedBuilder(
+                              animation: rotate,
+                              builder: (context, widget){
+                                final value = min(rotate.value, pi/2);
+                                return Transform(
+                                  alignment: Alignment.center,
+                                  transform: Matrix4.rotationY(value),
+                                  child: widget,
+                                );
+                              },
+                              child: widget
+                          );
+                        },
+                        duration: const Duration(milliseconds: 500),
+                        child: context.watch<MemoryModel>().isBack?
+                        Container(
+                          key: const ValueKey<int>(1),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 100),
+                          width: double.infinity,
+                          height: double.infinity,
+                          color: Colors.grey.shade400,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: 5,
+                                  child: ListView(
+                                    children: [
+                                      Container(
+                                          margin: const EdgeInsets.all(10),
+                                          child: const Text('메세지\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd')
+                                      )
+                                    ],
+                                  )
                               ),
-                            );
-                          }
-                    ),
+                              Expanded(
+                                  child: SizedBox(
+                                      width: 150,
+                                      child: Image.asset("assets/text/logYD.png")
+                                  )
+                              )
+                            ],
+                          )
+                        ) :
+                        Container(
+                          key: const ValueKey<int>(0),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 100),
+                          color: Colors.white,
+                          child: GridView.builder(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                            itemCount: 6,
+                            itemBuilder: (context, i){
+                              return Container(
+                                margin: const EdgeInsets.all(10),
+                                child: Image.asset('assets/naver.png'),
+                              );
+                            }
+                         ),
+                        ),
                       ),
                       Align(
                         alignment: Alignment.bottomCenter,
@@ -114,17 +144,6 @@ class MemorySecond extends StatelessWidget {
                           ),
                         ),
                       ),
-                      context.watch<MemoryModel>().isBack?
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 150),
-                            width: 150,
-                            child: Image.asset('assets/text/logYD.png')
-                        ),
-                      )
-                          : const Text(''),
-                      context.watch<MemoryModel>().isBack? const Text('메세지',style: TextStyle(color: Colors.white),) : const Text(''),
                     ],
                   ),
                 )

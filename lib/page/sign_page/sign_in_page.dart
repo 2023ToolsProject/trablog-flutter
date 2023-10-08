@@ -30,7 +30,7 @@ class _SignInPageState extends State<SignInPage> {
         child: Column(
           children: [
             Expanded(
-                flex: 2,
+                flex: 1,
                 child: Container(
                     margin: const EdgeInsets.all(30),
                     child: const Align(
@@ -40,7 +40,7 @@ class _SignInPageState extends State<SignInPage> {
                 )
             ),
             Expanded(
-                flex: 8,
+                flex: 5,
                 child: Column(
                   children: [
                     const SizedBox(height: 20,),
@@ -125,39 +125,6 @@ class _SignInPageState extends State<SignInPage> {
                   ],
                 )
             ),
-            Expanded(flex: 2,child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    width: 120,
-                    child: const Divider(thickness: 1.5,)
-                ),
-                const Text('or sign in with',style: TextStyle(fontSize: 20),),
-                Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    width: 120,
-                    child: const Divider(thickness: 1.5,)
-                ),
-              ],
-            )
-            ),
-            const Expanded(
-                flex: 3,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleIcon('assets/naver.png'),
-                    CircleIcon('assets/naver.png'),
-                    CircleIcon('assets/naver.png'),
-                    CircleIcon('assets/naver.png'),
-                    CircleIcon('assets/naver.png'),
-                  ],
-                )
-            )
-
           ],
         ),
       ),
