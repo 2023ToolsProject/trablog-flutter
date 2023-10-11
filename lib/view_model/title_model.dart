@@ -16,6 +16,7 @@ class TitleModel extends ChangeNotifier {
   checkToken() async{
     await Storage.init();
     String? token = await Storage.pref!.getString('accessToken');
+    throw Future.error('바로 실행'); // 임시
     trabDio.options.headers = {'authorization' : token};
     var response = await trabDio.get(SIGN_CHECK);
     print(response);

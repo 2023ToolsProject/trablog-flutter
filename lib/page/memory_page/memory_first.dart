@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trablog/page/memory_page/memory_second.dart';
+import 'package:trablog/page/memory_page/write_page.dart';
 import 'package:trablog/view_model/memory_model.dart';
+import 'package:trablog/view_model/write_model.dart';
 
 class MemoryFirst extends StatelessWidget {
   const MemoryFirst({Key? key}) : super(key: key);
@@ -16,18 +18,26 @@ class MemoryFirst extends StatelessWidget {
                 child: SizedBox(
                   child: Column(
                     children: [
-                      const Expanded(
+                      Expanded(
                           child: Align(
                             alignment: Alignment.bottomRight,
                             child: SizedBox(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Icon(Icons.person_outline),
+                                  GestureDetector(
+                                      onTap: (){
+                                        Navigator.push(context, MaterialPageRoute(
+                                            builder: (context) => ChangeNotifierProvider(
+                                              create: (context) => WriteModel(),
+                                              child: const WritePage(),
+                                            ))
+                                        );
+                                      },
+                                      child: const Icon(Icons.flight_takeoff)
+                                  ),
                                   space,
-                                  Icon(Icons.flight_takeoff),
-                                  space,
-                                  Icon(Icons.more_vert),
+                                  const Icon(Icons.more_vert),
                                   space
                                 ],
                               ),
