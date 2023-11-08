@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:trablog/page/sign_page/sign_in_page.dart';
+import 'package:trablog/page/sign_pages/sign_in_page.dart';
 import 'package:provider/provider.dart';
-import 'package:trablog/page/sign_page/sign_up_page.dart';
+import 'package:trablog/page/sign_pages/sign_up_page.dart';
 import 'package:trablog/view_model/sign_model.dart';
 import 'package:trablog/view_model/title_model.dart';
 

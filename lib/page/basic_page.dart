@@ -11,10 +11,35 @@ class BasicPage extends StatelessWidget {
         onWillPop: () async => context.read<BasicModel>().onWillPop(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
+          body: SafeArea(
+            child: Stack(
+              children: [
+                context.read<BasicModel>().page[context.watch<BasicModel>().i],
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    color: Colors.transparent,
+                    height: 100,
+                    child: const Row(
+                      children: [
+                        Expanded(child: BottomItem(Icons.room, 0)),
+                        Expanded(child: BottomItem(Icons.mode_edit, 1)),
+                        Expanded(
+                            child: BottomCenterItem(2)
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+          /*
           body: context.read<BasicModel>().page[context.watch<BasicModel>().i],
-          bottomNavigationBar: const SizedBox(
+          bottomNavigationBar: Container(
+            color: Colors.transparent,
             height: 100,
-            child: Row(
+            child: const Row(
               children: [
                 Expanded(child: BottomItem(Icons.room, 0)),
                 Expanded(child: BottomItem(Icons.mode_edit, 1)),
@@ -24,6 +49,7 @@ class BasicPage extends StatelessWidget {
               ],
             ),
           ),
+          */
         )
     );
   }

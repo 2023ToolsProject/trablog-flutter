@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trablog/page/basic_page.dart';
-import 'package:trablog/page/sign_page/title_page.dart';
+import 'package:trablog/page/sign_pages/title_page.dart';
 import 'package:trablog/view_model/basic_model.dart';
+import 'package:trablog/view_model/map_model.dart';
 import 'package:trablog/view_model/memory_model.dart';
 import 'package:trablog/view_model/plan_model.dart';
 import 'package:trablog/view_model/title_model.dart';
@@ -30,7 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       providers: [
                         ChangeNotifierProvider(create: (context) => BasicModel()),
                         ChangeNotifierProvider(create: (context) => PlanModel()),
-                        ChangeNotifierProvider(create: (context) => MemoryModel())
+                        ChangeNotifierProvider(create: (context) => MemoryModel()),
+                        ChangeNotifierProvider(create: (context) => MapModel())
                       ],
                       child: const BasicPage(),
                     )));

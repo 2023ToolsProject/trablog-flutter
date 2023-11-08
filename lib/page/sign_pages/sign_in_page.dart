@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trablog/page/basic_page.dart';
+import 'package:trablog/view_model/map_model.dart';
 import 'package:trablog/view_model/memory_model.dart';
 import 'package:trablog/view_model/plan_model.dart';
 import 'package:trablog/view_model/sign_model.dart';
@@ -58,7 +59,8 @@ class _SignInPageState extends State<SignInPage> {
                                 providers: [
                                   ChangeNotifierProvider(create: (context)=>BasicModel()),
                                   ChangeNotifierProvider(create: (context)=>PlanModel()),
-                                  ChangeNotifierProvider(create: (context)=>MemoryModel())
+                                  ChangeNotifierProvider(create: (context)=>MemoryModel()),
+                                  ChangeNotifierProvider(create: (context)=>MapModel())
                                 ],
                                 child: const BasicPage(),
                               )),

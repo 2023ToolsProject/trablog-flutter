@@ -6,7 +6,7 @@ class PlanPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: const Text('플랜 페이지'),
+      child: Text('테스트'),
     );
   }
 }

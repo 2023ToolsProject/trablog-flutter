@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trablog/page/memory_page/modify_page.dart';
+import 'package:trablog/page/memory_pages/modify_page.dart';
 import 'package:trablog/view_model/memory_model.dart';
 import 'package:trablog/view_model/write_model.dart';
 
