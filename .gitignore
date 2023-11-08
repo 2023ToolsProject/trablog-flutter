@@ -45,3 +45,4 @@ app.*.map.json
 
 # custom
 lib/const/const_key.dart
+android/app/src/main/AndroidManifest.xml
