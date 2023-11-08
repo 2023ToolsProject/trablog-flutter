@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trablog/page/memory_page/modify_page.dart';
 import 'package:trablog/view_model/memory_model.dart';
+import 'package:trablog/view_model/write_model.dart';
 
 class MemorySecond extends StatelessWidget {
   const MemorySecond({Key? key}) : super(key: key);
@@ -37,7 +39,12 @@ class MemorySecond extends StatelessWidget {
                                   alignment: Alignment.bottomRight,
                                   child: GestureDetector(
                                     onTap: (){
-
+                                      Navigator.push(context, MaterialPageRoute(
+                                          builder: (context) => ChangeNotifierProvider(
+                                            create: (context) => WriteModel(),
+                                            child: const ModifyPage(),
+                                          )
+                                      ));
                                     },
                                     child: Container(
                                         margin: const EdgeInsets.symmetric(horizontal: 20),

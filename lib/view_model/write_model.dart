@@ -61,4 +61,8 @@ class WriteModel extends ChangeNotifier {
 
   }
 
+  modify(){
+
+  }
+
 }

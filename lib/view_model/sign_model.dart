@@ -30,21 +30,21 @@ class SignModel extends ChangeNotifier {
       'id' : con1.text,
       'password' : con2.text,
     };
-    var response = await trabDio.post(SIGN_IN,queryParameters: mapData);
+    var response = await trabDio.post(LOGIN,queryParameters: mapData);
     var data = json.decode(response.toString());
     await Storage.pref!.setString('accessToken', data['token']);
   }
 
   signUp() async{
     Map<String,String> mapData = {
-      'name' : con1.text,
-      'username' : con2.text,
+      'username' : con1.text,
+      'email' : con2.text,
       'password' : con3!.text,
-      'role' : 'ROLE_USER',
     };
-    var response = await trabDio.post(SIGN_UP,queryParameters: mapData);
-    var data = json.decode(response.toString());
-    await Storage.pref!.setString('accessToken', data['token']);
+    var response = await trabDio.post(JOIN,queryParameters: mapData);
+    print(response);
+    //var data = json.decode(response.toString());
+    //await Storage.pref!.setString('accessToken', data['token']);
   }
 
   rememberEmail() async {

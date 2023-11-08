@@ -9,6 +9,7 @@ class WritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -108,15 +109,11 @@ class WritePage extends StatelessWidget {
                      ],
                     ),
                   ),
-                  const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Divider(thickness: 1.5,),
-                  )
                 ],
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
                 child: Container(
                   margin: const EdgeInsets.all(20),
                   child: Column(
@@ -188,6 +185,7 @@ class WritePage extends StatelessWidget {
                 )
             ),
             Expanded(
+                flex: 2,
                 child: Stack(
                   children: [
                     const Align(
@@ -202,7 +200,7 @@ class WritePage extends StatelessWidget {
                         itemBuilder: (context, i){
                           return Container(
                               width: 50,
-                              margin: const EdgeInsets.fromLTRB(1, 5, 1, 5),
+                              margin: const EdgeInsets.all(5),
                               child: Image.file(File(context.watch<WriteModel>().img![i].path))
                           );
                         }
