@@ -27,12 +27,13 @@ class SignModel extends ChangeNotifier {
       await Storage.pref!.setString('id', con1.text);
     }
     Map<String,String> mapData = {
-      'id' : con1.text,
+      'username' : con1.text,
       'password' : con2.text,
     };
-    var response = await trabDio.post(LOGIN,queryParameters: mapData);
+    var response = await trabDio.post(LOGIN,data: mapData);
     var data = json.decode(response.toString());
-    await Storage.pref!.setString('accessToken', data['token']);
+    await Storage.pref!.setString('accessToken', data['accessToken']);
+    await Storage.pref!.setString('refreshToken', data['refreshToken']);
   }
 
   signUp() async{
@@ -41,10 +42,10 @@ class SignModel extends ChangeNotifier {
       'email' : con2.text,
       'password' : con3!.text,
     };
-    var response = await trabDio.post(JOIN,queryParameters: mapData);
-    print(response);
-    //var data = json.decode(response.toString());
-    //await Storage.pref!.setString('accessToken', data['token']);
+    var response = await trabDio.post(JOIN,data: mapData);
+    var data = json.decode(response.toString());
+    await Storage.pref!.setString('accessToken', data['accessToken']);
+    await Storage.pref!.setString('refreshToken', data['refreshToken']);
   }
 
   rememberEmail() async {

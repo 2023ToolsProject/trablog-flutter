@@ -37,7 +37,6 @@ class _SplashScreenState extends State<SplashScreen> {
                       child: const BasicPage(),
                     )));
       } catch(e){
-        print(e.toString());
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(context, MaterialPageRoute(
             builder: (context) => ChangeNotifierProvider(

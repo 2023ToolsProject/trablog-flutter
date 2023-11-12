@@ -52,7 +52,7 @@ class _SignInPageState extends State<SignInPage> {
                     GestureDetector(
                       onTap: () async{
                         try{
-                          // await context.read<SignModel>().signIn();
+                          await context.read<SignModel>().signIn();
                           // ignore: use_build_context_synchronously
                           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
                               builder: (context) => MultiProvider(
