@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trablog/view_model/basic_model.dart';
+import 'package:trablog/view_model/write_model.dart';
 
 class BasicPage extends StatelessWidget {
   const BasicPage({Key? key}) : super(key: key);
@@ -23,9 +24,8 @@ class BasicPage extends StatelessWidget {
                     child: const Row(
                       children: [
                         Expanded(child: BottomItem(Icons.room, 0)),
-                        Expanded(child: BottomItem(Icons.mode_edit, 1)),
                         Expanded(
-                            child: BottomCenterItem(2)
+                            child: BottomCenterItem(1)
                         )
                       ],
                     ),
@@ -34,22 +34,6 @@ class BasicPage extends StatelessWidget {
               ],
             ),
           )
-          /*
-          body: context.read<BasicModel>().page[context.watch<BasicModel>().i],
-          bottomNavigationBar: Container(
-            color: Colors.transparent,
-            height: 100,
-            child: const Row(
-              children: [
-                Expanded(child: BottomItem(Icons.room, 0)),
-                Expanded(child: BottomItem(Icons.mode_edit, 1)),
-                Expanded(
-                    child: BottomCenterItem(2)
-                )
-              ],
-            ),
-          ),
-          */
         )
     );
   }
@@ -69,7 +53,7 @@ class BottomItem extends StatelessWidget {
         Expanded(
             flex: 3,
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 context.read<BasicModel>().changeIndex(index);
               },
               child: Container(
@@ -91,8 +75,40 @@ class BottomCenterItem extends StatelessWidget {
   Widget build(BuildContext context) {
     bool select = (index == context.watch<BasicModel>().i);
     return GestureDetector(
-      onTap: (){
+      onTap: () async{
         context.read<BasicModel>().changeIndex(index);
+        if(index == 1){
+          try{
+            await context.read<WriteModel>().getPosition();
+            // ignore: use_build_context_synchronously
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context){
+                  return AlertDialog(
+                    title: const Text('위치 정보를 가져오는 데 성공'),
+                    actions: [
+                      TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                    ],
+                  );
+                }
+            );
+          } catch(e){
+            // ignore: use_build_context_synchronously
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context){
+                  return AlertDialog(
+                    title: Text(e.toString()),
+                    actions: [
+                      TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                    ],
+                  );
+                }
+            );
+          }
+        }
       },
       child: Container(
           height: double.infinity,

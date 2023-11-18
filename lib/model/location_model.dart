@@ -1,3 +1,4 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:trablog/singleton/http.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:trablog/const/const_key.dart';
@@ -33,12 +34,12 @@ class LocationModel {
     return await _determinePosition();
   }
 
-  getAddress(Position p,{int option = 1}) async {
+  getAddress(LatLng location,{int option = 1}) async {
 
     switch(option){
       case 1:
         Map<String,String> queryData = {
-          'latlng' : '${p.latitude},${p.longitude}',
+          'latlng' : '${location.latitude},${location.longitude}',
           'key' : KEY,
           'result_type' : 'street_address',
         };
@@ -47,7 +48,7 @@ class LocationModel {
         return deResult;
       case 2:
         Map<String,String> queryData = {
-          'latlng' : '${p.latitude},${p.longitude}',
+          'latlng' : '${location.latitude},${location.longitude}',
           'key' : KEY,
           'result_type' : 'premise',
         };

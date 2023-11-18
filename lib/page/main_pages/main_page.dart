@@ -9,6 +9,8 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       return GoogleMap(
+        markers: context.watch<MapModel>().markers,
+        onTap: context.read<MapModel>().onTap,
         onMapCreated: context.read<MapModel>().onMapCreated,
         initialCameraPosition: const CameraPosition(target: LatLng(37.63,127.07),zoom: 14.0),
       );

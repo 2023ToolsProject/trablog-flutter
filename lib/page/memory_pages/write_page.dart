@@ -17,18 +17,6 @@ class WritePage extends StatelessWidget {
               height: 120,
               child: Stack(
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(15),
-                          child: Icon(Icons.navigate_before,size: 40,),
-                        ),
-                      ),
-                    ),
                     const Align(
                         alignment: Alignment.bottomCenter,
                         child: Padding(
@@ -112,80 +100,8 @@ class WritePage extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              flex: 3,
-                child: Container(
-                  margin: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Expanded(
-                          child: GestureDetector(
-                            onTap: () async{
-                              try{
-                               await context.read<WriteModel>().getPosition();
-                               // ignore: use_build_context_synchronously
-                               showDialog(
-                                   barrierDismissible: false,
-                                   context: context,
-                                   builder: (context){
-                                     return AlertDialog(
-                                       title: const Text('위치 정보를 가져오는데 성공'),
-                                       actions: [TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))],
-                                     );
-                                   });
-                              }catch(e){
-                                // ignore: use_build_context_synchronously
-                                showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context){
-                                      return AlertDialog(
-                                        title: Text(e.toString()),
-                                        actions: [TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))],
-                                      );
-                                    });
-                              }
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                                      child: const Text('위치 태그',style: TextStyle(fontSize: 15),)
-                                  ),
-                                  Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                                      child: const Icon(Icons.arrow_forward_ios,size: 15,color: Colors.grey,)
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                      ),
-                      Expanded(
-                          child: Container(
-                            decoration: const BoxDecoration(border: Border.symmetric(vertical: BorderSide(color: Colors.grey))),
-                          )
-                      ),
-                      Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-                          )
-                      ),
-                      Expanded(
-                          child: Container(
-                            decoration: const BoxDecoration(border: Border(right: BorderSide(color: Colors.grey),left: BorderSide(color: Colors.grey),
-                            bottom: BorderSide(color: Colors.grey))),
-                          )
-                      ),
-                    ],
-                  ),
-                )
-            ),
-            Expanded(
-                flex: 2,
+            SizedBox(
+                height: 100,
                 child: Stack(
                   children: [
                     const Align(

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trablog/page/basic_page.dart';
 import 'package:trablog/view_model/map_model.dart';
-import 'package:trablog/view_model/memory_model.dart';
-import 'package:trablog/view_model/plan_model.dart';
 import 'package:trablog/view_model/sign_model.dart';
 import 'package:trablog/view_model/basic_model.dart';
+import 'package:trablog/view_model/write_model.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -58,9 +57,8 @@ class _SignInPageState extends State<SignInPage> {
                               builder: (context) => MultiProvider(
                                 providers: [
                                   ChangeNotifierProvider(create: (context)=>BasicModel()),
-                                  ChangeNotifierProvider(create: (context)=>PlanModel()),
-                                  ChangeNotifierProvider(create: (context)=>MemoryModel()),
-                                  ChangeNotifierProvider(create: (context)=>MapModel())
+                                  ChangeNotifierProvider(create: (context)=>WriteModel()),
+                                  ChangeNotifierProvider(create: (context)=>MapModel(context))
                                 ],
                                 child: const BasicPage(),
                               )),
