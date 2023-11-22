@@ -44,7 +44,7 @@ class WritePage extends StatelessWidget {
               )
             ),
             SizedBox(
-              height: 350,
+              height: 450,
               child: Stack(
                 children: [
                   Center(
@@ -77,6 +77,20 @@ class WritePage extends StatelessWidget {
                            width: double.infinity,
                            color: Colors.grey.shade300,
                            child: const Icon(Icons.camera_alt,color: Color(0xff666666),),
+                         ),
+                       ),
+                       Container(
+                         padding: const EdgeInsets.symmetric(horizontal: 10),
+                         margin: const EdgeInsets.symmetric(horizontal: 20),
+                         width: double.infinity,
+                         height: 50,
+                         color: Colors.grey.shade300,
+                         child: TextFormField(
+                           controller: context.read<WriteModel>().titleCon,
+                           decoration: const InputDecoration(
+                               border: InputBorder.none,
+                               hintText: '제목 입력...'
+                           ),
                          ),
                        ),
                        Container(

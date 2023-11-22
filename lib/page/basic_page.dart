@@ -13,24 +13,14 @@ class BasicPage extends StatelessWidget {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: SafeArea(
-            child: Stack(
+            child: context.read<BasicModel>().page[context.watch<BasicModel>().i],
+          ),
+          bottomNavigationBar: const SizedBox(
+            height: 80,
+            child: Row(
               children: [
-                context.read<BasicModel>().page[context.watch<BasicModel>().i],
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    color: Colors.transparent,
-                    height: 100,
-                    child: const Row(
-                      children: [
-                        Expanded(child: BottomItem(Icons.room, 0)),
-                        Expanded(
-                            child: BottomCenterItem(1)
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                Expanded(child: BottomItem(Icons.room, 0)),
+                Expanded(child: BottomItem(Icons.create, 1)),
               ],
             ),
           )
@@ -38,6 +28,7 @@ class BasicPage extends StatelessWidget {
     );
   }
 }
+
 
 class BottomItem extends StatelessWidget {
   const BottomItem(this.icon,this.index,{Key? key}) : super(key: key);
@@ -47,26 +38,53 @@ class BottomItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool select = (index == context.watch<BasicModel>().i);
-    return Column(
-      children: [
-        Expanded(child: Container(color: Colors.transparent,)),
-        Expanded(
-            flex: 3,
-            child: GestureDetector(
-              onTap: () {
-                context.read<BasicModel>().changeIndex(index);
-              },
-              child: Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: Icon(icon,color: select? Colors.black : Colors.grey,)
-              ),
-            )
-        )
-      ],
+    return GestureDetector(
+      onTap: () async {
+        context.read<BasicModel>().changeIndex(index);
+        if(index == 1){
+          try{
+            await context.read<WriteModel>().getPosition();
+            // ignore: use_build_context_synchronously
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context){
+                  return AlertDialog(
+                    title: const Text('위치 정보를 가져오는 데 성공'),
+                    actions: [
+                      TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                    ],
+                  );
+                }
+            );
+          } catch(e){
+            // ignore: use_build_context_synchronously
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context){
+                  return AlertDialog(
+                    title: Text(e.toString()),
+                    actions: [
+                      TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                    ],
+                  );
+                }
+            );
+          }
+        }
+      },
+      child: Container(
+          width: double.infinity,
+          color: Colors.white,
+          child: Icon(icon,color: select? Colors.black : Colors.grey,)
+      ),
     );
   }
 }
+
+
+/*
 class BottomCenterItem extends StatelessWidget {
   const BottomCenterItem(this.index, {Key? key}) : super(key: key);
   final int index;
@@ -122,4 +140,6 @@ class BottomCenterItem extends StatelessWidget {
   }
 }
 
+
+ */
 

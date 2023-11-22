@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trablog/page/basic_page.dart';
 import 'package:trablog/view_model/map_model.dart';
+import 'package:trablog/view_model/memory_model.dart';
 import 'package:trablog/view_model/sign_model.dart';
 import 'package:trablog/view_model/basic_model.dart';
 import 'package:trablog/view_model/write_model.dart';
@@ -58,6 +59,7 @@ class _SignInPageState extends State<SignInPage> {
                                 providers: [
                                   ChangeNotifierProvider(create: (context)=>BasicModel()),
                                   ChangeNotifierProvider(create: (context)=>WriteModel()),
+                                  ChangeNotifierProvider(create: (context)=>MemoryModel()),
                                   ChangeNotifierProvider(create: (context)=>MapModel(context))
                                 ],
                                 child: const BasicPage(),
@@ -113,13 +115,6 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                           const Text('remember me',style: TextStyle(fontSize: 20),),
                         ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                      child: TextButton(
-                        onPressed: (){},
-                        child: const Text('Forgot Password?',style: TextStyle(fontSize: 20),),
                       ),
                     ),
                   ],

@@ -10,14 +10,16 @@ class WriteModel extends ChangeNotifier {
 
   final ImageModel _imgModel = ImageModel();
   final LocationModel _locationModel = LocationModel();
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _titleCon = TextEditingController();
+  final TextEditingController _textCon = TextEditingController();
   Position? _p;
   late LatLng _location;
   late String _address;
   late String _building;
   List<XFile>? _img;
 
-  TextEditingController get textCon => _controller;
+  TextEditingController get titleCon => _titleCon;
+  TextEditingController get textCon => _textCon;
   List<XFile>? get img => _img;
 
   getXImage() async{

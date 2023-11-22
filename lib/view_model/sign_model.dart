@@ -34,6 +34,10 @@ class SignModel extends ChangeNotifier {
     var data = json.decode(response.toString());
     await Storage.pref!.setString('accessToken', data['accessToken']);
     await Storage.pref!.setString('refreshToken', data['refreshToken']);
+    if(data['accessToken'] != null){
+      String bToken = 'Bearr ${data['accessToken']}';
+      trabDio.options.headers = {'Authorization' : bToken};
+    }
   }
 
   signUp() async{

@@ -7,7 +7,7 @@ class MemoryModel extends ChangeNotifier {
   bool _isBack = false;
   final PageController _con = PageController(viewportFraction: 0.7);
 
-  int? get i => _index;
+  int? get index => _index;
   List? get data => _data;
   bool get isBack => _isBack;
   PageController get con => _con;
