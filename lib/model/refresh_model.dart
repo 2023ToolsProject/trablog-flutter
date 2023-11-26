@@ -12,7 +12,7 @@ class RefreshModel {
     await Storage.pref!.setString('accessToken', data['accessToken']);
     await Storage.pref!.setString('refreshToken', data['refreshToken']);
     String bToken = 'Bearer ${data['accessToken']}';
-    trabDio.options.headers = {'Authorization' : bToken};
+    trabDio.options.headers['Authorization'] = bToken;
   }
 
 }

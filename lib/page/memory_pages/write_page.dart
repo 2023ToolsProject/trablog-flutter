@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trablog/view_model/memory_model.dart';
 import 'package:trablog/view_model/write_model.dart';
 
 class WritePage extends StatelessWidget {
@@ -29,8 +30,39 @@ class WritePage extends StatelessWidget {
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 30),
                           child: GestureDetector(
-                              onTap: (){
-                                context.read<WriteModel>().post();
+                              onTap: () async{
+                                try{
+                                  await context.read<WriteModel>().post();
+                                  // ignore: use_build_context_synchronously
+                                  await context.read<MemoryModel>().getData();
+                                  // ignore: use_build_context_synchronously
+                                  showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (context){
+                                        return AlertDialog(
+                                          title: const Text('업로드 성공'),
+                                          actions: [
+                                            TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                                          ],
+                                        );
+                                      }
+                                  );
+                                } catch(e){
+                                  // ignore: use_build_context_synchronously
+                                  showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (context){
+                                        return AlertDialog(
+                                          title: Text(e.toString()),
+                                          actions: [
+                                            TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                                          ],
+                                        );
+                                      }
+                                  );
+                                }
                               },
                               child: const Text('Post',style: TextStyle(fontSize: 25),)
                           ),

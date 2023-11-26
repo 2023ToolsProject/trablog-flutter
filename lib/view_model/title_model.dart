@@ -17,11 +17,11 @@ class TitleModel extends ChangeNotifier {
 
   checkToken() async{
     await Storage.init();
-    String? token = await Storage.pref!.getString('accessToken');
-    String? rToken = await Storage.pref!.getString('refreshToken');
+    String? token = Storage.pref!.getString('accessToken');
+    String? rToken = Storage.pref!.getString('refreshToken');
     if(token != null){
       String bToken = 'Bearr $token';
-      trabDio.options.headers = {'Authorization' : bToken};
+      trabDio.options.headers['Authorization'] = bToken;
     }
     try{
       await trabDio.get(PROFILE);

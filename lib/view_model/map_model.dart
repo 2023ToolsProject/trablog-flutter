@@ -12,9 +12,6 @@ class MapModel extends ChangeNotifier {
 
   late BuildContext context;
 
-  final Set<Marker> _markers = {};
-  Set<Marker> get markers => _markers;
-
   final Completer<GoogleMapController> _controller =  Completer();
   Completer<GoogleMapController> get controller => _controller;
 
@@ -60,16 +57,5 @@ class MapModel extends ChangeNotifier {
           }
       );
     }
-
-
-
-
-
-    // _markers.add(Marker(
-    //     markerId: MarkerId(location.toString()),
-    //     position: location,
-    //     onTap: (){print('테스트');}
-    // ));
-    // notifyListeners();
   }
 }

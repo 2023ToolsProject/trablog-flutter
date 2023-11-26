@@ -19,24 +19,15 @@ class TitlePage extends StatelessWidget {
           child: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('assets/cat/cat2.png')
+                fit: BoxFit.fill,
+                image: AssetImage('assets/cat/cat.jpg')
               )
             ),
             child: Column(
               children: [
                 const Expanded(
                     flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text('The Best Time',style: TextStyle(fontSize: 30,color: Colors.white),),
-                        empty,
-                        Text('For You',style: TextStyle(fontSize: 30,color: Colors.white)),
-                        empty,
-                        Text('To Travel',style: TextStyle(fontSize: 30,color: Colors.white)),
-                      ]
-                    )
+                    child: SizedBox()
                 ),
                 Expanded(
                     flex: 3,
@@ -84,7 +75,7 @@ class TitleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 30),
-      height: 80,
+      height: 60,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,

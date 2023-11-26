@@ -3,19 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:trablog/const/const_value.dart';
 import 'package:trablog/model/image_model.dart';
 import 'package:trablog/model/location_model.dart';
+import 'package:trablog/model/refresh_model.dart';
+import 'package:trablog/singleton/http.dart';
+import 'package:trablog/singleton/storage.dart';
 
 class WriteModel extends ChangeNotifier {
 
+  final RefreshModel _rModel = RefreshModel();
   final ImageModel _imgModel = ImageModel();
   final LocationModel _locationModel = LocationModel();
   final TextEditingController _titleCon = TextEditingController();
   final TextEditingController _textCon = TextEditingController();
   Position? _p;
-  late LatLng _location;
-  late String _address;
-  late String _building;
+  LatLng? _location;
+  String? _address;
+  String? _building;
   List<XFile>? _img;
 
   TextEditingController get titleCon => _titleCon;
@@ -46,14 +51,14 @@ class WriteModel extends ChangeNotifier {
   }
 
   getPositionInfo() async {
-      var addResult = await _locationModel.getAddress(_location,option: 1);
+      var addResult = await _locationModel.getAddress(_location!,option: 1);
       if(addResult['results'].isNotEmpty){
         _address = addResult['results'][0]['formatted_address'];
       } else {
         _address = '';
       }
       print(_address);
-      var buildResult = await _locationModel.getAddress(_location,option: 2);
+      var buildResult = await _locationModel.getAddress(_location!,option: 2);
       if(buildResult['results'].isNotEmpty){
         _building = buildResult['results'][0]['address_components'][0]['long_name'];
       } else {
@@ -63,15 +68,38 @@ class WriteModel extends ChangeNotifier {
 
   }
 
-  post(){
-    if(_img != null && _img!.isNotEmpty){
-      List<MultipartFile> files = _img!.map((img) => MultipartFile.fromFileSync(img.path)).toList();
-      FormData data = FormData.fromMap({
-      });
-    } else {
-      FormData data = FormData.fromMap({
-      });
+  post() async {
+    if(_img == null || _img!.isEmpty){
+      return Future.error('이미지가 없습니다.');
     }
+    // ignore: unnecessary_null_comparison
+    if(_location == null || _address == null){
+      return Future.error('주소 정보가 없습니다.');
+    }
+
+    List<MultipartFile> files = _img!.map((img) => MultipartFile.fromFileSync(img.path)).toList();
+    FormData data = FormData.fromMap({
+      "image" : files,
+      "requestDto" : {
+        "title": _titleCon.text,
+        "content": _textCon.text,
+        "latitude": _location!.latitude,
+        "longitude": _location!.longitude,
+        "address": _address!
+      }
+    });
+
+    try{
+      await trabDio.get(PROFILE);
+    } catch(e){
+      var rToken = Storage.pref!.getString('refreshToken');
+      if(rToken == null){
+        throw Future.error('토큰 없음');
+      }
+      await _rModel.refreshToken(rToken);
+    }
+
+    await trabDio.post(BOARD_POST,data: data,options: Options(contentType: 'multipart/form-data'));
 
   }
 
