@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trablog/view_model/basic_model.dart';
+import 'package:trablog/view_model/memory_model.dart';
 import 'package:trablog/view_model/write_model.dart';
 
 class BasicPage extends StatelessWidget {
@@ -8,6 +9,7 @@ class BasicPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    init(context);
     return WillPopScope(
         onWillPop: () async => context.read<BasicModel>().onWillPop(),
         child: Scaffold(
@@ -27,6 +29,33 @@ class BasicPage extends StatelessWidget {
         )
     );
   }
+
+  init(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 1));
+    try{
+      // ignore: use_build_context_synchronously
+      context.read<MemoryModel>().getContext(context);
+      // ignore: use_build_context_synchronously
+      await context.read<MemoryModel>().getData();
+    } catch(e){
+      // ignore: use_build_context_synchronously
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context){
+            return AlertDialog(
+              title: const Text('로딩하는데 실패했습니다'),
+              actions: [
+                TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+              ],
+            );
+          }
+      );
+    }
+  }
+
+
+
 }
 
 

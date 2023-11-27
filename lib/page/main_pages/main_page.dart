@@ -4,21 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:trablog/view_model/map_model.dart';
 import 'package:trablog/view_model/memory_model.dart';
 
-class MainPage extends StatefulWidget {
+class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
-
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    context.read<MemoryModel>().getData();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,4 +16,5 @@ class _MainPageState extends State<MainPage> {
         initialCameraPosition: const CameraPosition(target: LatLng(37.63,127.07),zoom: 14.0),
       );
   }
+
 }

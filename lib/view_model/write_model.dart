@@ -105,7 +105,7 @@ class WriteModel extends ChangeNotifier {
       await _rModel.refreshToken(rToken);
     }
 
-    await trabDio.post(BOARD_POST,data: data,options: Options(contentType: 'multipart/form-data'));
+    await trabDio.post(BOARD,data: data,options: Options(contentType: 'multipart/form-data'));
     _resetValue();
   }
 
