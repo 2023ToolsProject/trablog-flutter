@@ -128,9 +128,21 @@ class MemorySecond extends StatelessWidget {
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                             itemCount: context.read<MemoryModel>().clickedData['boardImages'].length,
                             itemBuilder: (context, i){
-                              return Container(
-                                margin: const EdgeInsets.all(10),
-                                child: Image.network(BASE_IMAGE_URL + context.read<MemoryModel>().clickedData['boardImages'][i]['filePath']),
+                              return GestureDetector(
+                                onTap: (){
+                                  showDialog(
+                                      context: context,
+                                      builder: (context){
+                                        return GestureDetector(
+                                            onTap: (){Navigator.pop(context);},
+                                            child: Image.network(BASE_IMAGE_URL + context.read<MemoryModel>().clickedData['boardImages'][i]['filePath'])
+                                        );
+                                      });
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.all(10),
+                                  child: Image.network(BASE_IMAGE_URL + context.read<MemoryModel>().clickedData['boardImages'][i]['filePath'],fit: BoxFit.fill,),
+                                ),
                               );
                             }
                          ),

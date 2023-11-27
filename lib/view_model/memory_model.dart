@@ -80,19 +80,30 @@ class MemoryModel extends ChangeNotifier {
       Response r = await trabDio.get('$BOARD/$i');
       _clickedData = r.data;
     } catch(e){
-      // ignore: use_build_context_synchronously
-      showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context){
-            return AlertDialog(
-              title: const Text('로딩하는데 실패했습니다'),
-              actions: [
-                TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
-              ],
-            );
-          }
-      );
+      try{
+        var rToken = Storage.pref!.getString('refreshToken');
+        if(rToken == null){
+          throw Future.error('토큰 없음');
+        }
+        await _rModel.refreshToken(rToken);
+
+        Response r = await trabDio.get('$BOARD/$i');
+        _clickedData = r.data;
+      } catch(e){
+        // ignore: use_build_context_synchronously
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context){
+              return AlertDialog(
+                title: const Text('로딩하는데 실패했습니다'),
+                actions: [
+                  TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                ],
+              );
+            }
+        );
+      }
     }
     // ignore: use_build_context_synchronously
     Navigator.push(context, MaterialPageRoute(
