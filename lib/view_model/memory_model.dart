@@ -10,7 +10,7 @@ import 'package:trablog/singleton/storage.dart';
 class MemoryModel extends ChangeNotifier {
 
   int? _index;
-  List? _data;
+  List _data = [];
   bool _isBack = false;
   BitmapDescriptor? _markerImage;
   final Set<Marker> _markers = {};
@@ -18,7 +18,7 @@ class MemoryModel extends ChangeNotifier {
   final RefreshModel _rModel = RefreshModel();
 
   int? get index => _index;
-  List? get data => _data;
+  List get data => _data;
   bool get isBack => _isBack;
   Set<Marker> get markers => _markers;
   PageController get con => _con;
@@ -28,7 +28,7 @@ class MemoryModel extends ChangeNotifier {
     _index = i;
     notifyListeners();
   }
-  getMarkerImage() async {
+  _getMarkerImage() async {
     _markerImage ??= await MarkerIcon.pictureAsset(assetPath: 'assets/marker.png', width: 250, height: 250);
   }
 
@@ -45,10 +45,19 @@ class MemoryModel extends ChangeNotifier {
 
     Response response = await trabDio.get(BOARD_GET_LIST);
 
-    print(response);
+    _data = response.data;
+    await _getMarkerImage();
 
-    await getMarkerImage();
-
+    for (var d in _data) {
+      var newMarker = Marker(
+          markerId: MarkerId(d['id'].toString()),
+          position: LatLng(d['latitude'], d['longitude']),
+          icon: _markerImage!,
+          onTap: (){ print(d['id']);}
+      );
+      _markers.add(newMarker);
+    }
+    notifyListeners();
   }
 
   flipImage(){

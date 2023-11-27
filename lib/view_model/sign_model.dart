@@ -17,8 +17,8 @@ class SignModel extends ChangeNotifier {
   GlobalKey<FormState> get key => _key;
 
   signInInit() async{
-    _remember = await (Storage.pref!.getBool('remember') ?? false);
-    con1.text = await (Storage.pref!.getString('id') ?? '');
+    _remember = Storage.pref!.getBool('remember') ?? false;
+    con1.text = Storage.pref!.getString('id') ?? '';
     notifyListeners();
   }
 
@@ -35,8 +35,8 @@ class SignModel extends ChangeNotifier {
     await Storage.pref!.setString('accessToken', data['accessToken']);
     await Storage.pref!.setString('refreshToken', data['refreshToken']);
     if(data['accessToken'] != null){
-      String bToken = 'Bearr ${data['accessToken']}';
-      trabDio.options.headers = {'Authorization' : bToken};
+      String bToken = 'Bearer ${data['accessToken']}';
+      trabDio.options.headers['Authorization'] = bToken;
     }
   }
 

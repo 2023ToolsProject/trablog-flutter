@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:trablog/const/const_value.dart';
 import 'package:trablog/model/image_model.dart';
@@ -41,16 +44,16 @@ class WriteModel extends ChangeNotifier {
     _p = await _locationModel.getPosition();
     if(_p != null){
       _location = LatLng(_p!.latitude, _p!.longitude);
-      getPositionInfo();
+      _getPositionInfo();
     }
   }
 
   setLocation(LatLng location){
     _location = location;
-    getPositionInfo();
+    _getPositionInfo();
   }
 
-  getPositionInfo() async {
+  _getPositionInfo() async {
       var addResult = await _locationModel.getAddress(_location!,option: 1);
       if(addResult['results'].isNotEmpty){
         _address = addResult['results'][0]['formatted_address'];
@@ -77,16 +80,19 @@ class WriteModel extends ChangeNotifier {
       return Future.error('주소 정보가 없습니다.');
     }
 
-    List<MultipartFile> files = _img!.map((img) => MultipartFile.fromFileSync(img.path)).toList();
+    //jpg만 올릴 수 있음
+    List<MultipartFile> files = _img!.map((img) => MultipartFile.fromFileSync(img.path,filename: img.name,contentType: MediaType('image', 'jpeg'))).toList();
+    Map boardDto = {
+      'title': _titleCon.text,
+      'content': _textCon.text,
+      'latitude': _location!.latitude,
+      'longitude': _location!.longitude,
+      'address': _address!
+    };
+    String jBoardDto = json.encode(boardDto);
     FormData data = FormData.fromMap({
-      "image" : files,
-      "requestDto" : {
-        "title": _titleCon.text,
-        "content": _textCon.text,
-        "latitude": _location!.latitude,
-        "longitude": _location!.longitude,
-        "address": _address!
-      }
+      'createBoardDto' : jBoardDto,
+      'image' : files
     });
 
     try{
@@ -100,11 +106,23 @@ class WriteModel extends ChangeNotifier {
     }
 
     await trabDio.post(BOARD_POST,data: data,options: Options(contentType: 'multipart/form-data'));
-
+    _resetValue();
   }
 
   modify(){
 
   }
+
+  _resetValue(){
+    _titleCon.text = '';
+    _textCon.text = '';
+    _p = null;
+    _location = null;
+    _address = '';
+    _building = '';
+    _img = null;
+    notifyListeners();
+  }
+
 
 }

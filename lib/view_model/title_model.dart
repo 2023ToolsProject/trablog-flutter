@@ -20,7 +20,7 @@ class TitleModel extends ChangeNotifier {
     String? token = Storage.pref!.getString('accessToken');
     String? rToken = Storage.pref!.getString('refreshToken');
     if(token != null){
-      String bToken = 'Bearr $token';
+      String bToken = 'Bearer $token';
       trabDio.options.headers['Authorization'] = bToken;
     }
     try{
