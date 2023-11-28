@@ -33,19 +33,19 @@ class MemorySecond extends StatelessWidget {
                                   splashRadius: 0.1,
                                   onPressed: (){
                                     showDialog(
-                                        context: context, 
+                                        context: context,
                                         builder: (context){
                                           return AlertDialog(
                                             title: const Text('게시물을 삭제하시겠습니까?'),
                                             actions: [
                                               TextButton(onPressed: () async{
                                                 int id = context.read<MemoryModel>().clickedData['id'];
-                                                Navigator.pop(context);
-                                                Navigator.pop(context);
                                                 try{
                                                   await context.read<MemoryModel>().deleteData(id);
                                                   // ignore: use_build_context_synchronously
                                                   await context.read<MemoryModel>().getData();
+                                                  // ignore: use_build_context_synchronously
+                                                  Navigator.popUntil(context,(route) => route.isFirst);
                                                 } catch(e){
                                                   // ignore: use_build_context_synchronously
                                                   showDialog(
@@ -55,13 +55,12 @@ class MemorySecond extends StatelessWidget {
                                                         return AlertDialog(
                                                           title: Text(e.toString()),
                                                           actions: [
-                                                            TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                                                            TextButton(onPressed: (){Navigator.popUntil(context,(route) => route.isFirst);}, child: const Text('확인'))
                                                           ],
                                                         );
                                                       }
                                                   );
-                                                }
-
+                                                 }
                                                 },
                                                   child: const Text('확인')
                                               ),
@@ -151,7 +150,7 @@ class MemorySecond extends StatelessWidget {
                                     children: [
                                       Container(
                                           margin: const EdgeInsets.all(10),
-                                          child: Text(context.read<MemoryModel>().clickedData['title'] + '\n' + context.read<MemoryModel>().clickedData['content'],style: const TextStyle(fontSize: 20),)
+                                          child: Text((context.read<MemoryModel>().clickedData?['title'] ?? '') + '\n' + (context.read<MemoryModel>().clickedData?['content'] ?? ''),style: const TextStyle(fontSize: 20),)
                                       )
                                     ],
                                   )

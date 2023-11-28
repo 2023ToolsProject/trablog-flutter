@@ -89,7 +89,6 @@ class Post extends StatelessWidget {
             child: Center(
               child: GestureDetector(
                 onTap: (){
-                  context.read<MemoryModel>().setIndex(index);
                   var mm = context.read<MemoryModel>().mm;
                   Navigator.push(context, MaterialPageRoute(builder: (context)=> ChangeNotifierProvider(
                       create: (context)=> mm,

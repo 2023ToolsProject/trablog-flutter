@@ -12,7 +12,6 @@ class MemoryModel extends ChangeNotifier {
 
   late BuildContext context;
 
-  int? _index;
   Map _clickedData = {};
   List _data = [];
   bool _isBack = false;
@@ -21,7 +20,6 @@ class MemoryModel extends ChangeNotifier {
   final PageController _con = PageController(viewportFraction: 0.7);
   final RefreshModel _rModel = RefreshModel();
 
-  int? get index => _index;
   Map get clickedData => _clickedData;
   List get data => _data;
   bool get isBack => _isBack;
@@ -29,10 +27,6 @@ class MemoryModel extends ChangeNotifier {
   PageController get con => _con;
   MemoryModel get mm => this;
 
-  setIndex(int i){
-    _index = i;
-    notifyListeners();
-  }
   _getMarkerImage() async {
     _markerImage ??= await MarkerIcon.pictureAsset(assetPath: 'assets/marker.png', width: 250, height: 250);
   }

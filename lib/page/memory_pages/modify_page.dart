@@ -42,7 +42,7 @@ class ModifyPage extends StatelessWidget {
                                         context: context,
                                         builder: (context){
                                           return AlertDialog(
-                                            title: const Text('업로드 성공'),
+                                            title: const Text('수정 성공'),
                                             actions: [
                                               TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
                                             ],
@@ -86,13 +86,57 @@ class ModifyPage extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
+                              var model = context.read<WriteModel>();
                               showDialog(
                                   context: context,
                                   builder: (context){
                                     return AlertDialog(
-                                      title: const Text('내용만 수정 가능'),
+                                      title: const Text('사진을 추가 하시겠습니까?'),
                                       actions: [
-                                        TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                                        TextButton(
+                                            onPressed: () async{
+                                              try{
+                                                int id = context.read<MemoryModel>().clickedData['id'];
+                                                int i = context.read<MemoryModel>().clickedData['boardImages'].length;
+                                                await model.addXImage(6 - i);
+                                                await model.imagePost();
+                                                // ignore: use_build_context_synchronously
+                                                await context.read<MemoryModel>().getOnlyData(id);
+                                                int cnt = 0;
+                                                // ignore: use_build_context_synchronously
+                                                showDialog(
+                                                    barrierDismissible: false,
+                                                    context: context,
+                                                    builder: (context){
+                                                      return AlertDialog(
+                                                        title: const Text('사진 추가 성공'),
+                                                        actions: [
+                                                          TextButton(onPressed: (){Navigator.popUntil(context,(route) => cnt++ >= 2);}, child: const Text('확인'))
+                                                        ],
+                                                      );
+                                                    }
+                                                );
+
+                                              } catch(e){
+                                                int cnt = 0;
+                                                // ignore: use_build_context_synchronously
+                                                showDialog(
+                                                    barrierDismissible: false,
+                                                    context: context,
+                                                    builder: (context){
+                                                      return AlertDialog(
+                                                        title: Text(e.toString()),
+                                                        actions: [
+                                                          TextButton(onPressed: (){Navigator.popUntil(context,(route) => cnt++ >= 2);}, child: const Text('확인'))
+                                                        ],
+                                                      );
+                                                    }
+                                                );
+                                              }
+                                              },
+                                            child: const Text('확인')
+                                        ),
+                                        TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('취소'))
                                       ],
                                     );
                                   }

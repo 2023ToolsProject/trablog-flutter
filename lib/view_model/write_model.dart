@@ -41,6 +41,18 @@ class WriteModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  addXImage(int value) async{
+    if(value == 0){
+      return Future.error('더 이상 사진 추가가 불가능합니다.');
+    }
+    _img = await _imgModel.getMultiXFile();
+    if(_img!.length > value){
+      _img = null;
+      notifyListeners();
+      return Future.error('사진 개수를 $value개 이하로 해주세요');
+    }
+  }
+
   getPosition() async {
     _p = await _locationModel.getPosition();
     if(_p != null){
@@ -108,6 +120,31 @@ class WriteModel extends ChangeNotifier {
 
     await trabDio.post(BOARD,data: data,options: Options(contentType: 'multipart/form-data'));
     _resetValue();
+  }
+
+  imagePost() async{
+    if(_img == null || _img!.isEmpty){
+      return Future.error('이미지가 없습니다.');
+    }
+    //jpg만 올릴 수 있음
+    List<MultipartFile> files = _img!.map((img) => MultipartFile.fromFileSync(img.path,filename: img.name,contentType: MediaType('image', 'jpeg'))).toList();
+    FormData data = FormData.fromMap({
+      'image' : files
+    });
+
+    try{
+      await trabDio.get(PROFILE);
+    } catch(e){
+      var rToken = Storage.pref!.getString('refreshToken');
+      if(rToken == null){
+        throw Future.error('토큰 없음');
+      }
+      await _rModel.refreshToken(rToken);
+    }
+
+    await trabDio.post('$BOARD/$_id/images',data: data,options: Options(contentType: 'multipart/form-data'));
+    _img = null;
+
   }
 
   modify() async{
