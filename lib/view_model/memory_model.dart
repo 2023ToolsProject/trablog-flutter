@@ -96,6 +96,24 @@ class MemoryModel extends ChangeNotifier {
 
   }
 
+  deleteData(int i) async{
+    try{
+      await trabDio.delete('$BOARD/$i');
+      _clickedData = {};
+      notifyListeners();
+    } catch(e){
+      var rToken = Storage.pref!.getString('refreshToken');
+      if(rToken == null){
+        throw Future.error('토큰 없음');
+      }
+      await _rModel.refreshToken(rToken);
+
+      await trabDio.delete('$BOARD/$i');
+      _clickedData = {};
+      notifyListeners();
+    }
+  }
+
 
   _markerTap(int i) async{
     try{

@@ -32,9 +32,46 @@ class MemorySecond extends StatelessWidget {
                                 child: IconButton(
                                   splashRadius: 0.1,
                                   onPressed: (){
-                                    Navigator.pop(context);
+                                    showDialog(
+                                        context: context, 
+                                        builder: (context){
+                                          return AlertDialog(
+                                            title: const Text('게시물을 삭제하시겠습니까?'),
+                                            actions: [
+                                              TextButton(onPressed: () async{
+                                                int id = context.read<MemoryModel>().clickedData['id'];
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);
+                                                try{
+                                                  await context.read<MemoryModel>().deleteData(id);
+                                                  // ignore: use_build_context_synchronously
+                                                  await context.read<MemoryModel>().getData();
+                                                } catch(e){
+                                                  // ignore: use_build_context_synchronously
+                                                  showDialog(
+                                                      barrierDismissible: false,
+                                                      context: context,
+                                                      builder: (context){
+                                                        return AlertDialog(
+                                                          title: Text(e.toString()),
+                                                          actions: [
+                                                            TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                                                          ],
+                                                        );
+                                                      }
+                                                  );
+                                                }
+
+                                                },
+                                                  child: const Text('확인')
+                                              ),
+                                              TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('취소'))
+                                            ],
+                                          );
+                                        }
+                                    );
                                   },
-                                  icon: const Icon(Icons.navigate_before,color: Color(0xff666666),size: 40,),
+                                  icon: const Icon(Icons.clear,color: Color(0xff666666),size: 40,),
                                 ),
                               ),
                               Align(
@@ -134,7 +171,7 @@ class MemorySecond extends StatelessWidget {
                           color: const Color(0xfff5f5f5),
                           child: GridView.builder(
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                            itemCount: context.read<MemoryModel>().clickedData['boardImages'].length,
+                            itemCount: context.read<MemoryModel>().clickedData['boardImages']?.length ?? 0,
                             itemBuilder: (context, i){
                               return GestureDetector(
                                 onTap: (){

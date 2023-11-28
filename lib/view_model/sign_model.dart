@@ -17,6 +17,7 @@ class SignModel extends ChangeNotifier {
   GlobalKey<FormState> get key => _key;
 
   signInInit() async{
+    await Future.delayed(const Duration(milliseconds: 200));
     _remember = Storage.pref!.getBool('remember') ?? false;
     con1.text = Storage.pref!.getString('id') ?? '';
     notifyListeners();
