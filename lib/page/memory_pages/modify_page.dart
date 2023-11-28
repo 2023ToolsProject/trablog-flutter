@@ -1,8 +1,156 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trablog/view_model/memory_model.dart';
 import 'package:trablog/view_model/write_model.dart';
 
+
+
+class ModifyPage extends StatelessWidget {
+  const ModifyPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+          child: Column(
+            children: [
+              SizedBox(
+                  height: 120,
+                  child: Stack(
+                    children: [
+                      const Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: EdgeInsets.all(30),
+                            child: Text('Modify Post',style: TextStyle(fontSize: 25),),
+                          )
+                      ),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 30),
+                            child: GestureDetector(
+                                onTap: () async{
+                                  try{
+                                    await context.read<WriteModel>().modify();
+                                    // ignore: use_build_context_synchronously
+                                    await context.read<MemoryModel>().getOnlyData(context.read<MemoryModel>().clickedData['id']);
+                                    // ignore: use_build_context_synchronously
+                                    showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (context){
+                                          return AlertDialog(
+                                            title: const Text('업로드 성공'),
+                                            actions: [
+                                              TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                                            ],
+                                          );
+                                        }
+                                    );
+                                  } catch(e){
+                                    // ignore: use_build_context_synchronously
+                                    showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (context){
+                                          return AlertDialog(
+                                            title: Text(e.toString()),
+                                            actions: [
+                                              TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                                            ],
+                                          );
+                                        }
+                                    );
+                                  }
+                                },
+                                child: const Text('post',style: TextStyle(fontSize: 25),)
+                            ),
+                          )
+                      ),
+                      const Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Divider(thickness: 1.5,)
+                      )
+                    ],
+                  )
+              ),
+              SizedBox(
+                height: 450,
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context){
+                                    return AlertDialog(
+                                      title: const Text('내용만 수정 가능'),
+                                      actions: [
+                                        TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+                                      ],
+                                    );
+                                  }
+                              );
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                              height: 150,
+                              width: double.infinity,
+                              color: Colors.grey.shade300,
+                              child: const Icon(Icons.camera_alt,color: Color(0xff666666),),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            width: double.infinity,
+                            height: 50,
+                            color: Colors.grey.shade300,
+                            child: TextFormField(
+                              controller: context.read<WriteModel>().titleCon,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: '제목 입력...'
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                            height: 150,
+                            width: double.infinity,
+                            color: Colors.grey.shade300,
+                            child: TextFormField(
+                              controller: context.read<WriteModel>().textCon,
+                              maxLines: 10,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: '문구 입력...'
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
+      ),
+    );
+  }
+}
+
+
+
+/*
 class ModifyPage extends StatelessWidget {
   const ModifyPage({Key? key}) : super(key: key);
 
@@ -215,3 +363,4 @@ class ModifyPage extends StatelessWidget {
     );
   }
 }
+*/

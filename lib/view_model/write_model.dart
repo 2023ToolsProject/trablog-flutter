@@ -25,6 +25,7 @@ class WriteModel extends ChangeNotifier {
   String? _address;
   String? _building;
   List<XFile>? _img;
+  int? _id;
 
   TextEditingController get titleCon => _titleCon;
   TextEditingController get textCon => _textCon;
@@ -109,8 +110,48 @@ class WriteModel extends ChangeNotifier {
     _resetValue();
   }
 
-  modify(){
+  modify() async{
+    if(_location == null || _address == null){
+      return Future.error('주소 정보가 없습니다.');
+    }
+    if(_id == null){
+      return Future.error('아이디 정보가 없습니다.');
+    }
 
+    Map boardDto = {
+      'title': _titleCon.text,
+      'content': _textCon.text,
+      'latitude': _location!.latitude,
+      'longitude': _location!.longitude,
+      'address': _address!
+    };
+    String jBoardDto = json.encode(boardDto);
+
+    FormData data = FormData.fromMap({
+      'requestDto' : jBoardDto,
+    });
+
+    try{
+      await trabDio.get(PROFILE);
+    } catch(e){
+      var rToken = Storage.pref!.getString('refreshToken');
+      if(rToken == null){
+        throw Future.error('토큰 없음');
+      }
+      await _rModel.refreshToken(rToken);
+    }
+
+    await trabDio.put('$BOARD/$_id',data: data,options: Options(contentType: 'multipart/form-data'));
+    _resetValue();
+
+  }
+
+  getData(String title, String content, LatLng location, String address, int id){
+    _titleCon.text = title;
+    _textCon.text = content;
+    _location = location;
+    _address = address;
+    _id = id;
   }
 
   _resetValue(){

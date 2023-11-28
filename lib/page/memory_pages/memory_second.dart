@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:trablog/const/const_value.dart';
 import 'package:trablog/page/memory_pages/modify_page.dart';
@@ -40,12 +41,19 @@ class MemorySecond extends StatelessWidget {
                                   alignment: Alignment.bottomRight,
                                   child: GestureDetector(
                                     onTap: (){
+                                      var model = WriteModel();
                                       Navigator.push(context, MaterialPageRoute(
                                           builder: (context) => ChangeNotifierProvider(
-                                            create: (context) => WriteModel(),
+                                            create: (context) => model,
                                             child: const ModifyPage(),
                                           )
                                       ));
+                                      String title = context.read<MemoryModel>().clickedData['title'];
+                                      String content = context.read<MemoryModel>().clickedData['content'];
+                                      LatLng location = LatLng(context.read<MemoryModel>().clickedData['latitude'], context.read<MemoryModel>().clickedData['longitude']);
+                                      String address = context.read<MemoryModel>().clickedData['address'];
+                                      int id = context.read<MemoryModel>().clickedData['id'];
+                                      model.getData(title, content, location, address, id);
                                     },
                                     child: Container(
                                         margin: const EdgeInsets.symmetric(horizontal: 20),

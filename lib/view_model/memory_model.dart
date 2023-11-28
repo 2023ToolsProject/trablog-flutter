@@ -17,7 +17,7 @@ class MemoryModel extends ChangeNotifier {
   List _data = [];
   bool _isBack = false;
   BitmapDescriptor? _markerImage;
-  final Set<Marker> _markers = {};
+  Set<Marker> _markers = {};
   final PageController _con = PageController(viewportFraction: 0.7);
   final RefreshModel _rModel = RefreshModel();
 
@@ -57,6 +57,7 @@ class MemoryModel extends ChangeNotifier {
     _data = response.data;
     await _getMarkerImage();
 
+    Set<Marker> newMarkerSet = {};
     for (var d in _data) {
       var newMarker = Marker(
           markerId: MarkerId(d['id'].toString()),
@@ -64,8 +65,9 @@ class MemoryModel extends ChangeNotifier {
           icon: _markerImage!,
           onTap: (){ _markerTap(d['id']);}
       );
-      _markers.add(newMarker);
+      newMarkerSet.add(newMarker);
     }
+    _markers = newMarkerSet;
 
     notifyListeners();
   }
@@ -75,12 +77,12 @@ class MemoryModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  _markerTap(int i) async{
+  getOnlyData(int i) async{
     try{
       Response r = await trabDio.get('$BOARD/$i');
       _clickedData = r.data;
+      notifyListeners();
     } catch(e){
-      try{
         var rToken = Storage.pref!.getString('refreshToken');
         if(rToken == null){
           throw Future.error('토큰 없음');
@@ -89,35 +91,36 @@ class MemoryModel extends ChangeNotifier {
 
         Response r = await trabDio.get('$BOARD/$i');
         _clickedData = r.data;
-      } catch(e){
-        // ignore: use_build_context_synchronously
-        showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (context){
-              return AlertDialog(
-                title: const Text('로딩하는데 실패했습니다'),
-                actions: [
-                  TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
-                ],
-              );
-            }
-        );
-      }
+        notifyListeners();
     }
-    // ignore: use_build_context_synchronously
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => const MemorySecond()
-    ));
 
   }
 
 
+  _markerTap(int i) async{
+    try{
+      await getOnlyData(i);
+      // ignore: use_build_context_synchronously
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) => const MemorySecond()
+      ));
+    } catch(e){
+      // ignore: use_build_context_synchronously
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context){
+            return AlertDialog(
+              title: const Text('로딩하는데 실패했습니다'),
+              actions: [
+                TextButton(onPressed: (){Navigator.pop(context);}, child: const Text('확인'))
+              ],
+            );
+          }
+      );
+    }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    print('dispose 실행');
+
   }
 
 }
