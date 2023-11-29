@@ -43,8 +43,8 @@ class SignModel extends ChangeNotifier {
 
   signUp() async{
     Map<String,String> mapData = {
-      'username' : con1.text,
-      'email' : con2.text,
+      'email' : con1.text,
+      'username' : con2.text,
       'password' : con3!.text,
     };
     var response = await trabDio.post(JOIN,data: mapData);

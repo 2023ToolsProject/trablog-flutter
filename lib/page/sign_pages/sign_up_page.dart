@@ -35,7 +35,7 @@ class SignUpPage extends StatelessWidget {
                         child: const Text('Enter your ID & Password',style: TextStyle(fontSize: 20),),
                       ),
                       space,
-                      TextForm('Username',context.read<SignModel>().con1),
+                      TextForm('Email',context.read<SignModel>().con1),
                       space,
                       TextForm('ID',context.read<SignModel>().con2,),
                       space,
